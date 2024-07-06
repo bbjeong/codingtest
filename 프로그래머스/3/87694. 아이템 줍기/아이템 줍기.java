@@ -3,6 +3,8 @@ import java.util.*;
 class Solution {
     public int solution(int[][] rectangle, int characterX, int characterY, int itemX, int itemY) {
         
+        // map의 크기를 2배 -> 경계/모서리쪽에 점이 겹칠 경우 경로의 착오가 발생할 수 있음
+        // 제한도 2배로 늘려줘야 런타임 에러 발생하지 않음 (101 -> 102)
 		int[][] graphs = new int[102][102];
 		for(int i=0;i<rectangle.length;i++) {
 			int lx = rectangle[i][0];
@@ -46,7 +48,7 @@ class Solution {
 				int x = prevX + moveX[i];
 				int y = prevY + moveY[i];
 
-				if (x>=1 && x <=graphs[0].length && y>=1 && y <=graphs.length) {
+				if (x >= 1 && x <= graphs.length && y >= 1 && y <= graphs[0].length) {
 					if (!visited[x][y] && graphs[x][y] == 1) {
 						visited[x][y] = true;
 						queue.add(new int[]{x, y, count + 1});
@@ -59,15 +61,16 @@ class Solution {
 
 
 	void fill(int[][] visited, int x1, int y1, int x2, int y2){
-		for(int i=x1;i<=x2;i++){
+		for (int i = x1; i <= x2; i++) {
 			visited[i][y1] = 1;
 			visited[i][y2] = 1;
 		}
-		for(int i=y1;i<=y2;i++){
+		for (int i = y1; i <= y2; i++) {
 			visited[x1][i] = 1;
 			visited[x2][i] = 1;
 		}
 	}
+    
 	void line(int[][] visited, int x1, int y1, int x2, int y2) {
 		for (int i = x1+1; i < x2; i++) {
 			for (int j = y1+1; j < y2; j++) {
